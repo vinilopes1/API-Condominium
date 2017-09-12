@@ -9,7 +9,7 @@ class CondominioAdmin(admin.ModelAdmin):
 
 @admin.register(Perfil)
 class PerfilAdmin(admin.ModelAdmin):
-    list_display = ('sexo', 'telefone', 'data_nascimento', 'foto', 'unidade_habitacional', 'usuario', )
+    list_display = ('sexo', 'telefone', 'data_nascimento', 'unidade_habitacional', 'usuario', )
 
 
 @admin.register(GrupoHabitacional)

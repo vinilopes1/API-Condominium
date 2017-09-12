@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'comum',
 
     #bibliotecas
-    'imagekit',
+    #'imagekit',
 ]
 
 MIDDLEWARE = [
