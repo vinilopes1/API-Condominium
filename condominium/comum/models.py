@@ -35,14 +35,24 @@ class Condominio(Base):
 
 class GrupoHabitacional(Base):
 
-    TIPO_GRUPO_HABITACIONAL = (('quadra', u'Quadra'), ('bloco', u'Bloco'), ('torre', u'Torre'))
-    TIPO_UNIDADE_HABITACIONAL = (('apartamento', u'Apartamento'), ('casa', u'Casa'), ('chale', u'Chale'))
+    TIPO_GRUPO_HABITACIONAL = (
+        ('quadra', u'Quadra'),
+        ('bloco', u'Bloco'),
+        ('torre', u'Torre')
+    )
 
+    TIPO_UNIDADE_HABITACIONAL = (
+        ('apartamento', u'Apartamento'),
+        ('casa', u'Casa'),
+        ('chale', u'Chale'),
+    )
+
+    nome = models.CharField('Nome', max_length=64, unique=True, blank=False, null=False)
     tipo = models.CharField('Tipo', choices=TIPO_GRUPO_HABITACIONAL, blank=False, null=False)
-    tipo_unidade = models.CharField('Tipo unidade' ,choices=TIPO_UNIDADE_HABITACIONAL, blank=False, null=False)
-    nome = models.CharField('Nome' ,max_length=50, unique=True, blank=False, null=False)
-    logradouro = models.CharField('logradouro' ,max_length=200, blank=False, null=False)
-    condominio = models.ForeignKey(Condominio, null=False, related_name='condominio')
+    tipo_unidade = models.CharField('Tipo unidade', choices=TIPO_UNIDADE_HABITACIONAL, blank=False, null=False)
+    logradouro = models.CharField('Logradouro', max_length=256, blank=True, null=True)
+
+    condominio = models.ForeignKey(Condominio, on_delete=models.CASCADE, related_name='grupos_habitacionais', null=False,)
 
     class Meta:
         verbose_name = 'Grupo Habitacional'
