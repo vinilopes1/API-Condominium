@@ -40,6 +40,9 @@ INSTALLED_APPS = [
 
     # condominium
     'comum',
+
+    #bibliotecas
+    'imagekit',
 ]
 
 MIDDLEWARE = [

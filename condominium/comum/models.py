@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.processors import ResizeToFill
+
 
 """
 Sobre organizaçaõ de Código e PEP-8: utilizar o Python
@@ -38,7 +41,7 @@ class GrupoHabitacional(Base):
     TIPO_GRUPO_HABITACIONAL = (
         ('quadra', u'Quadra'),
         ('bloco', u'Bloco'),
-        ('torre', u'Torre')
+        ('torre', u'Torre'),
     )
 
     TIPO_UNIDADE_HABITACIONAL = (
@@ -58,15 +61,15 @@ class GrupoHabitacional(Base):
         verbose_name = 'Grupo Habitacional'
         verbose_name_plural = 'Grupos Habitacionais'
         ordering = ('nome', )
-        unique_together = (('nome', 'codominio'),)
+        unique_together = (('nome', 'condominio'),)
 
 
 class UnidadeHabitacional(Base):
 
     nome = models.CharField(max_length=16, blank=False, null=False)
 
-    grupo_habitacional = models.ForeignKey(GrupoHabitacional, related_name='unidades', blank=False, null=False)
-    proprietario = models.ForeignKey('Perfil', related_name='unidades', blank=False, null=False)
+    grupo_habitacional = models.ForeignKey(GrupoHabitacional, on_delete=models.CASCADE, related_name='unidades', blank=False, null=False)
+    proprietario = models.ForeignKey('Perfil', on_delete=models.SET_NULL, related_name='unidades', blank=False, null=False)
 
     class Meta:
         verbose_name = 'Unidade habitacional'
@@ -75,23 +78,33 @@ class UnidadeHabitacional(Base):
         unique_together = (('nome', 'grupo_habitacional'),)
 
 
+def user_directory_path(instance, filename):
+    return 'fotos'
+
 
 class Perfil(Base):
 
-    SEXO = (('M', u'Masculino'), ('F', u'Feminino'))
+    SEXO_CHOICES = (
 
-    sexo = models.CharField('Sexo', choices=SEXO, blank=False, null=False)
-    telefone = models.CharField('Telefone', max_length=20, blank=False, null=False)
-    data_nascimento = models.DateTimeField('Data de nascimento', blank=False, null=False)
-    foto = models.CharField(max_length=200)
-    unidade_habitacional = models.ForeignKey(UnidadeHabitacional, blank=False, null=False, related_name= 'moradores')
+        ('M', u'Masculino'),
+        ('F', u'Feminino'),
+    )
 
+    sexo = models.CharField('Sexo', choices=SEXO_CHOICES, blank=False, null=False)
+    telefone = models.CharField('Telefone', max_length=16, blank=False, null=False)
+    data_nascimento = models.DateField('Data de nascimento', blank=False, null=False)
+    foto = models.ProcessedImageField(upload_to= user_directory_path,
+                                  processors=[ResizeToFill(720, 1280)],
+                                  format='JPEG',
+                                  options={'quality': 60})
+
+    unidade_habitacional = models.ForeignKey(UnidadeHabitacional, related_name= 'moradores', blank=True, null=True)
     usuario = models.OneToOneField(User, related_name='perfil')
 
     class Meta:
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfis'
-        #ordering = ('usuario.username')
+
 
 
 
