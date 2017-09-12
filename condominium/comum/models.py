@@ -47,7 +47,7 @@ class GrupoHabitacional(Base):
         ('chale', u'Chale'),
     )
 
-    nome = models.CharField('Nome', max_length=64, unique=True, blank=False, null=False)
+    nome = models.CharField('Nome', max_length=64, blank=False, null=False)
     tipo = models.CharField('Tipo', choices=TIPO_GRUPO_HABITACIONAL, blank=False, null=False)
     tipo_unidade = models.CharField('Tipo unidade', choices=TIPO_UNIDADE_HABITACIONAL, blank=False, null=False)
     logradouro = models.CharField('Logradouro', max_length=256, blank=True, null=True)
@@ -58,18 +58,22 @@ class GrupoHabitacional(Base):
         verbose_name = 'Grupo Habitacional'
         verbose_name_plural = 'Grupos Habitacionais'
         ordering = ('nome', )
+        unique_together = (('nome', 'codominio'),)
 
 
 class UnidadeHabitacional(Base):
 
-    nome = models.CharField(max_length=20, unique=True, blank=False, null=False)
-    grupo_habitacional = models.ForeignKey(GrupoHabitacional, null=False, related_name='grupo_habitacional')
-    proprietario = models.ForeignKey(Perfil, blank=False, null=False, related_name='proprietario')
+    nome = models.CharField(max_length=16, blank=False, null=False)
+
+    grupo_habitacional = models.ForeignKey(GrupoHabitacional, related_name='unidades', blank=False, null=False)
+    proprietario = models.ForeignKey('Perfil', related_name='unidades', blank=False, null=False)
 
     class Meta:
         verbose_name = 'Unidade habitacional'
         verbose_name_plural = 'Unidades habitacionais'
         ordering = ('nome', )
+        unique_together = (('nome', 'grupo_habitacional'),)
+
 
 
 class Perfil(Base):
