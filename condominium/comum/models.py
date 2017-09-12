@@ -55,7 +55,7 @@ class GrupoHabitacional(Base):
     tipo_unidade = models.CharField('Tipo unidade', max_length=64, choices=TIPO_UNIDADE_HABITACIONAL, blank=False, null=False)
     logradouro = models.CharField('Logradouro', max_length=256, blank=True, null=True)
 
-    condominio = models.ForeignKey(Condominio, on_delete=models.CASCADE, related_name='grupos_habitacionais', blank=False, null=False,)
+    condominio = models.ForeignKey('Condominio', on_delete=models.CASCADE, related_name='grupos_habitacionais', blank=False, null=False,)
 
     class Meta:
         verbose_name = 'Grupo Habitacional'
@@ -98,7 +98,7 @@ class Perfil(Base):
                                   options={'quality': 60})
     """
 
-    unidade_habitacional = models.ForeignKey(UnidadeHabitacional, related_name= 'moradores', blank=True, null=True)
+    unidade_habitacional = models.ForeignKey('UnidadeHabitacional', related_name= 'moradores', blank=True, null=True)
     usuario = models.OneToOneField(User, related_name='perfil')
 
     class Meta:
