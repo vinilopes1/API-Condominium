@@ -23,6 +23,9 @@ class Base(models.Model):
     criado_em = models.DateTimeField('Criado em', auto_now_add=True, blank=False, null=False)
     atualizado_em = models.DateTimeField('Atualizado em', auto_now=True)
 
+    class Meta:
+        abstract = True
+
 
 class Condominio(Base):
 
@@ -55,20 +58,20 @@ class GrupoHabitacional(Base):
     tipo_unidade = models.CharField('Tipo unidade', max_length=64, choices=TIPO_UNIDADE_HABITACIONAL, blank=False, null=False)
     logradouro = models.CharField('Logradouro', max_length=256, blank=True, null=True)
 
-    cond = models.ForeignKey(Condominio, on_delete=models.CASCADE, related_name='grupos_habitacionais', blank=False, null=False,)
+    condominio = models.ForeignKey('Condominio', on_delete=models.CASCADE, related_name='grupos_habitacionais', blank=False, null=False,)
 
     class Meta:
         verbose_name = 'Grupo Habitacional'
         verbose_name_plural = 'Grupos Habitacionais'
         ordering = ('nome', )
-        unique_together = (('nome', 'cond'),)
+        unique_together = (('nome', 'condominio'),)
 
 
 class UnidadeHabitacional(Base):
 
     nome = models.CharField(max_length=16, blank=False, null=False)
 
-    grupo_habitacional = models.ForeignKey(GrupoHabitacional, on_delete=models.CASCADE, related_name='unidades', blank=False, null=False)
+    grupo_habitacional = models.ForeignKey('GrupoHabitacional', on_delete=models.CASCADE, related_name='unidades', blank=False, null=False)
     proprietario = models.ForeignKey('Perfil', on_delete=models.SET_NULL, related_name='unidades', blank=True, null=True)
 
     class Meta:
