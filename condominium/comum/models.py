@@ -55,13 +55,13 @@ class GrupoHabitacional(Base):
     tipo_unidade = models.CharField('Tipo unidade', max_length=64, choices=TIPO_UNIDADE_HABITACIONAL, blank=False, null=False)
     logradouro = models.CharField('Logradouro', max_length=256, blank=True, null=True)
 
-    condominio = models.ForeignKey('Condominio', on_delete=models.CASCADE, related_name='grupos_habitacionais', blank=False, null=False,)
+    cond = models.ForeignKey(Condominio, on_delete=models.CASCADE, related_name='grupos_habitacionais', blank=False, null=False,)
 
     class Meta:
         verbose_name = 'Grupo Habitacional'
         verbose_name_plural = 'Grupos Habitacionais'
         ordering = ('nome', )
-        unique_together = (('nome', 'condominio'),)
+        unique_together = (('nome', 'cond'),)
 
 
 class UnidadeHabitacional(Base):
