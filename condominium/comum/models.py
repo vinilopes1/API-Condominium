@@ -1,6 +1,7 @@
+# coding: utf-8
 from django.db import models
 from django.contrib.auth.models import User
-from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
 
@@ -32,22 +33,21 @@ class Condominio(Base):
     class Meta:
         verbose_name = 'Condominio'
         verbose_name_plural = 'Condominios'
-        #unique_together = (('attr1', 'attr2'), )
         ordering = ('nome', )
 
 
 class GrupoHabitacional(Base):
 
     TIPO_GRUPO_HABITACIONAL = (
-        ('quadra', u'Quadra'),
-        ('bloco', u'Bloco'),
-        ('torre', u'Torre'),
+        ('quadra', 'Quadra'),
+        ('bloco', 'Bloco'),
+        ('torre', 'Torre'),
     )
 
     TIPO_UNIDADE_HABITACIONAL = (
-        ('apartamento', u'Apartamento'),
-        ('casa', u'Casa'),
-        ('chale', u'Chale'),
+        ('apartamento', 'Apartamento'),
+        ('casa', 'Casa'),
+        ('chale', 'Chale'),
     )
 
     nome = models.CharField('Nome', max_length=64, blank=False, null=False)
@@ -55,7 +55,7 @@ class GrupoHabitacional(Base):
     tipo_unidade = models.CharField('Tipo unidade', choices=TIPO_UNIDADE_HABITACIONAL, blank=False, null=False)
     logradouro = models.CharField('Logradouro', max_length=256, blank=True, null=True)
 
-    condominio = models.ForeignKey(Condominio, on_delete=models.CASCADE, related_name='grupos_habitacionais', null=False,)
+    condominio = models.ForeignKey(Condominio, on_delete=models.CASCADE, related_name='grupos_habitacionais', blank=False, null=False,)
 
     class Meta:
         verbose_name = 'Grupo Habitacional'
@@ -86,14 +86,14 @@ class Perfil(Base):
 
     SEXO_CHOICES = (
 
-        ('M', u'Masculino'),
-        ('F', u'Feminino'),
+        ('M', 'Masculino'),
+        ('F', 'Feminino'),
     )
 
     sexo = models.CharField('Sexo', choices=SEXO_CHOICES, blank=False, null=False)
     telefone = models.CharField('Telefone', max_length=16, blank=False, null=False)
     data_nascimento = models.DateField('Data de nascimento', blank=False, null=False)
-    foto = models.ProcessedImageField(upload_to= user_directory_path,
+    foto = ProcessedImageField(upload_to= user_directory_path,
                                   processors=[ResizeToFill(720, 1280)],
                                   format='JPEG',
                                   options={'quality': 60})
@@ -104,13 +104,3 @@ class Perfil(Base):
     class Meta:
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfis'
-
-
-
-
-
-
-
-
-
-
