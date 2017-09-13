@@ -1,12 +1,9 @@
 # coding: utf-8
 from django.db import models
 from django.contrib.auth.models import User
-#from imagekit.models import ProcessedImageField
-#from imagekit.processors import ResizeToFill
-
 
 """
-Sobre organizaçaõ de Código e PEP-8: utilizar o Python
+Sobre organização de Código e PEP-8: utilizar o Python
 classes, semanticamente organizadas
  > choices
  > models fields
@@ -29,14 +26,15 @@ class Base(models.Model):
 
 class Condominio(Base):
 
-    cnpj = models.CharField('CNPJ', max_length=11)
-    nome = models.CharField('Nome', max_length=128, unique=True, blank=False, null=False)
-    endereco = models.CharField('Endereco', max_length=128, blank=False, null=False)
+    cnpj = models.CharField('CNPJ', max_length=11, unique=True, blank=False, null=False)
+    nome = models.CharField('Nome', max_length=100, blank=False, null=False)
+    endereco = models.CharField('Endereco', max_length=200, blank=False, null=False)
 
     class Meta:
         verbose_name = 'Condominio'
         verbose_name_plural = 'Condominios'
         ordering = ('nome', )
+        unique_together = (('cnpj','nome'), )
 
 
 class GrupoHabitacional(Base):
@@ -71,18 +69,14 @@ class UnidadeHabitacional(Base):
 
     nome = models.CharField(max_length=16, blank=False, null=False)
 
-    grupo_habitacional = models.ForeignKey('GrupoHabitacional', on_delete=models.CASCADE, related_name='unidades', blank=False, null=False)
-    proprietario = models.ForeignKey('Perfil', on_delete=models.SET_NULL, related_name='unidades', blank=True, null=True)
+    grupo_habitacional = models.ForeignKey('GrupoHabitacional', on_delete=models.CASCADE, related_name='unidades_habitacionais', blank=False, null=False)
+    proprietario = models.ForeignKey('Perfil', on_delete=models.SET_NULL, related_name='unidades_habitacionais', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Unidade habitacional'
         verbose_name_plural = 'Unidades habitacionais'
         ordering = ('nome', )
         unique_together = (('nome', 'grupo_habitacional'),)
-
-
-"""def user_directory_path(instance, filename):
-    return 'fotos'"""
 
 
 class Perfil(Base):
@@ -95,11 +89,6 @@ class Perfil(Base):
     sexo = models.CharField('Sexo', max_length=16, choices=SEXO_CHOICES, blank=False, null=False)
     telefone = models.CharField('Telefone', max_length=16, blank=False, null=False)
     data_nascimento = models.DateField('Data de nascimento', blank=False, null=False)
-    """foto = ProcessedImageField(upload_to= user_directory_path,
-                                  processors=[ResizeToFill(720, 1280)],
-                                  format='JPEG',
-                                  options={'quality': 60})
-    """
 
     unidade_habitacional = models.ForeignKey('UnidadeHabitacional', related_name= 'moradores', blank=True, null=True)
     usuario = models.OneToOneField(User, related_name='perfil')
