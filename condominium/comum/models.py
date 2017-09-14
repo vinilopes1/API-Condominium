@@ -29,12 +29,16 @@ class Condominio(Base):
     cnpj = models.CharField('CNPJ', max_length=11, unique=True, blank=False, null=False)
     nome = models.CharField('Nome', max_length=100, blank=False, null=False)
     endereco = models.CharField('Endereco', max_length=200, blank=False, null=False)
+    sindico = models.ForeignKey('Perfil', on_delete=models.SET_NULL, related_name='condominios', blank=False, null=True)
 
     class Meta:
         verbose_name = 'Condominio'
         verbose_name_plural = 'Condominios'
         ordering = ('nome', )
         unique_together = (('cnpj','nome'), )
+
+    def __str__(self):
+        return self.nome
 
 
 class GrupoHabitacional(Base):
@@ -96,3 +100,6 @@ class Perfil(Base):
     class Meta:
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfis'
+
+    def nome(self):
+        return '%s %s' % (self.usuario.first_name, self.usuario.last_name)
