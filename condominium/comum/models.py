@@ -11,7 +11,6 @@ classes, semanticamente organizadas
  > override methods (save, clean)
  > property
  > business methods
- 
 """
 
 
@@ -68,6 +67,9 @@ class GrupoHabitacional(Base):
         ordering = ('nome', )
         unique_together = (('nome', 'condominio'),)
 
+    def __str__(self):
+        return '%s - %s - %s' % (self.condominio, self.tipo, self.nome)
+
 
 class UnidadeHabitacional(Base):
 
@@ -100,6 +102,9 @@ class Perfil(Base):
     class Meta:
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfis'
+
+    def __str__(self):
+        return self.nome()
 
     def nome(self):
         return '%s %s' % (self.usuario.first_name, self.usuario.last_name)
