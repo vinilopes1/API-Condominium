@@ -32,7 +32,7 @@ class GrupoHabitacionalAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if not obj.pk:
-            obj.condominio = request.user.perfil.condominios.all()[0]
+            obj.condominio = request.user.perfil.condominio
         obj.save()
 
     def get_queryset(self, request):
