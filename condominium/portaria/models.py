@@ -24,7 +24,7 @@ class Ocorrencia(Base):
         verbose_name_plural = 'Ocorrências'
 
     def __str__(self):
-        return self.descricao
+        return '%s (%s)' % (self.descricao, self.informante)
 
 
 class Comentario(Base):
