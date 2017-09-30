@@ -51,10 +51,11 @@ class Entrada(Base):
         ('expirada', 'Expirada'),
     )
 
-    data = models.DateField('Data', auto_now_add=True, blank=False, null=False)
+    data = models.DateField('Data', blank=False, null=False)
     hora = models.TimeField('Hora', blank=True, null=True)
     descricao = models.CharField('Descricao', max_length=256, blank=False, null=False)
     informante = models.ForeignKey(Perfil, on_delete = models.CASCADE, related_name = 'entradas', blank=False, null=False)
+    status = models.CharField('Status', max_length=64, choices=STATUS_ENTRADA, default='informada', blank=False, null=False)
 
     class Meta:
 
