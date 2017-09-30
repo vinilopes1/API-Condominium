@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # condominium
     'comum',
+    'portaria',
 
     #bibliotecas
     #'imagekit',
