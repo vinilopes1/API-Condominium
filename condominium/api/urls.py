@@ -9,5 +9,7 @@ router.register(r'entradas', views.EntradaViewSet)
 
 urlpatterns = [
     url(r'^token/', obtain_auth_token, name='api-token'),
-    url(r'^', include(router.urls))
+    url(r'^', include(router.urls)),
+    url(r'^ocorrencias/(?P<pk>\d+)/comentarios/$',
+        views.ComentariosViewSet.as_view({'post': 'create', 'get': 'list'}), name='comentarios')
 ]
