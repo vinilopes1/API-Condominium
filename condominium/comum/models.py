@@ -28,7 +28,7 @@ class Condominio(Base):
     cnpj = models.CharField('CNPJ', max_length=11, unique=True, blank=False, null=False)
     nome = models.CharField('Nome', max_length=100, blank=False, null=False)
     endereco = models.CharField('Endereco', max_length=200, blank=False, null=False)
-    sindico = models.OneToOneField('Perfil', on_delete=models.SET_NULL, related_name='condominio', blank=False, null=True)
+    sindico = models.OneToOneField('Perfil', on_delete=models.SET_NULL, related_name='condominio_administrado', blank=False, null=True)
 
     class Meta:
         verbose_name = 'Condominio'
@@ -83,6 +83,9 @@ class UnidadeHabitacional(Base):
         verbose_name_plural = 'Unidades habitacionais'
         ordering = ('nome', )
         unique_together = (('nome', 'grupo_habitacional'),)
+
+    def __str__(self):
+        return "%s %s - %s %s" % (self.grupo_habitacional.tipo, self.grupo_habitacional.nome, self.grupo_habitacional.tipo_unidade, self.nome)
 
 
 class Perfil(Base):
