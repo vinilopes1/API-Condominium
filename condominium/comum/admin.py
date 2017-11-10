@@ -17,7 +17,7 @@ class CondominioAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if not request.user.is_superuser:
             if db_field.name == 'sindico':
-                kwargs["queryset"] = Perfil.objects.filter(unidade_habitacional__grupo_habitacional__condominio=request.user.perfil.condominio)
+                kwargs["queryset"] = Perfil.objects.filter(condominio=request.user.perfil.condominio)
         return super(CondominioAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
