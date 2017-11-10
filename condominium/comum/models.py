@@ -98,6 +98,7 @@ class Perfil(Base):
 
     unidade_habitacional = models.ForeignKey('UnidadeHabitacional', related_name= 'moradores', blank=True, null=True)
     usuario = models.OneToOneField(User, related_name='perfil')
+    condominio = models.ForeignKey('Condominio', related_name='perfis', on_delete=models.CASCADE, blank=False, null=True)
 
     class Meta:
         verbose_name = 'Perfil'
