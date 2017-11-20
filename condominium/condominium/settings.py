@@ -31,6 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
+    #material design
+    'material.theme.lightgreen',
+    'material',
+    'material.frontend',
+    'material.admin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -130,6 +137,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# URL Login/Logout
+LOGIN_URL = 'admin/login/'
+LOGOUT_URL = 'admin/logout/'
 
 REST_FRAMEWORK = {
     #'PAGE_SIZE': 10
