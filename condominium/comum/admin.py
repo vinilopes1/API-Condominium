@@ -74,4 +74,12 @@ class UnidadadeHabitacionalAdmin(admin.ModelAdmin):
                 kwargs["queryset"] = GrupoHabitacional.objects.filter(condominio__sindico__usuario=request.user)
         return super(UnidadadeHabitacionalAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+    def get_queryset(self, request):
+        qs = super(UnidadadeHabitacionalAdmin, self).get_queryset(request)
+
+        if not request.user.is_superuser:
+            qs = qs.filter(grupo_habitacional__condominio=request.user.perfil.condominio)
+
+        return qs
+
 
