@@ -14,10 +14,30 @@ class CondominioAdmin(admin.ModelAdmin):
 
         return qs
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if not request.user.is_superuser:
+            if db_field.name == 'sindico':
+                kwargs["queryset"] = Perfil.objects.filter(condominio=request.user.perfil.condominio)
+        return super(CondominioAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 @admin.register(Perfil)
 class PerfilAdmin(admin.ModelAdmin):
     list_display = ('nome', 'sexo', 'telefone', 'data_nascimento', 'usuario', )
+
+    def get_queryset(self, request):
+        qs = super(PerfilAdmin, self).get_queryset(request)
+
+        if not request.user.is_superuser:
+            qs = qs.filter(condominio=request.user.perfil.condominio)
+
+        return qs
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if not request.user.is_superuser:
+            if db_field.name == 'condominio':
+                kwargs["queryset"] = Condominio.objects.filter(sindico=request.user.perfil)
+        return super(PerfilAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 @admin.register(GrupoHabitacional)
