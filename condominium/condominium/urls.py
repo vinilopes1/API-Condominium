@@ -22,7 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^admin/login/$', auth_views.login, {'template_name': "login.html"}, name='login'),
     url(r'^admin/logout/$', auth_views.logout, {'template_name': "login.html"}, name='logout'),
-    url(r'^admin/', admin.site.urls),
 
     # API
     url(r'^api/v1/', include('api.urls'), name='api'),
