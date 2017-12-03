@@ -25,6 +25,15 @@ class CondominioAdmin(admin.ModelAdmin):
 class PerfilAdmin(admin.ModelAdmin):
     list_display = ('nome', 'sexo', 'telefone', 'data_nascimento', 'usuario', )
 
+    fieldsets = (
+        ("Dados", {
+            'fields': ('usuario', ('telefone', 'data_nascimento',), ),
+        }),
+        ("Condomínio", {
+            'fields': ('condominio', 'unidade_habitacional', ),
+        })
+    )
+
     def get_queryset(self, request):
         qs = super(PerfilAdmin, self).get_queryset(request)
 
