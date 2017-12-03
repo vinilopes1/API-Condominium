@@ -30,7 +30,7 @@ class Ocorrencia(Base):
 class Comentario(Base):
 
     descricao = models.CharField('Descricao', max_length=256, blank=False, null=False)
-    ocorrencia = models.ForeignKey('Ocorrencia', on_delete = models.CASCADE, related_name = 'ocorrencias', blank=False, null=False)
+    ocorrencia = models.ForeignKey('Ocorrencia', on_delete = models.CASCADE, related_name = 'comentarios', blank=False, null=False)
 
     class Meta:
 
