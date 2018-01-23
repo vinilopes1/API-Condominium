@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     #'imagekit',
 
     'rest_framework',
-    #'rest_framework.authtoken',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
