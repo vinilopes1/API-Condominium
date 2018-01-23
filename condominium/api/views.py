@@ -8,14 +8,14 @@ from .serializers import OcorrenciaSerializer, OcorrenciaSimplesSerializer, Entr
 
 class DefaultMixin(object):
 
-    """authentication_classes = (
+    authentication_classes = (
         authentication.BasicAuthentication,
         authentication.TokenAuthentication,
     )
 
     permission_classes = (
-       permissions.IsAuthenticated
-    )"""
+       permissions.IsAuthenticated,
+    )
 
 
 class OcorrenciaViewSet(DefaultMixin, viewsets.ModelViewSet):
