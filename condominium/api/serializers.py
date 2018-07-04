@@ -1,5 +1,5 @@
 from rest_framework import serializers, exceptions
-from portaria.models import Ocorrencia, Comentario, Entrada
+from condominium.portaria.models import Ocorrencia, Comentario, Entrada
 
 
 class ComentarioSerializer(serializers.ModelSerializer):
