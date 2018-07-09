@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import  viewsets, authentication, permissions, status
 from rest_framework.response import Response
 
-from condominium.portaria.models import Ocorrencia, Comentario, Entrada
+from portaria.models import Ocorrencia, Comentario, Entrada
 from .serializers import OcorrenciaSerializer, OcorrenciaSimplesSerializer, EntradaSerializer, ComentarioSerializer
 
 
