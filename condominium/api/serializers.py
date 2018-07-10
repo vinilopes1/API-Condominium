@@ -1,5 +1,5 @@
 from rest_framework import serializers, exceptions
-from condominium.portaria.models import Ocorrencia, Comentario, Entrada
+from portaria.models import Ocorrencia, Comentario, Entrada, Aviso, Post, Visitante
 
 
 class ComentarioSerializer(serializers.ModelSerializer):
@@ -22,10 +22,6 @@ class ComentarioSerializer(serializers.ModelSerializer):
             raise exceptions.NotFound(detail='Ocorrencia não localizada.')
         except:
             raise exceptions.NotAcceptable(detail='Não foi possível adicionar o comentários.')
-
-
-
-
 
 
 class OcorrenciaSerializer(serializers.ModelSerializer):
@@ -53,3 +49,24 @@ class EntradaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Entrada
         fields = ('id', 'data', 'hora', 'descricao', 'informante', 'status', )
+
+
+class AvisoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Aviso
+        fields = ('id', 'descricao', 'prioridade', )
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ('id', 'descricao', 'foto')
+
+
+class VisitanteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Visitante
+        fields = ('id', 'nome', 'sexo', 'telefone', 'data_nascimento', )

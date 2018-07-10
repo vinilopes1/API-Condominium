@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.db import models
-from condominium.comum.models import Base, Perfil
+from comum.models import Base, Perfil
 
 
 class Post(Base):

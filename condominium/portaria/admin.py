@@ -1,5 +1,5 @@
 from django.contrib import admin
-from condominium.portaria.models import Ocorrencia, Entrada, Comentario
+from portaria.models import Ocorrencia, Entrada, Comentario
 
 
 class ComentarioOcorreniaInline(admin.TabularInline):
