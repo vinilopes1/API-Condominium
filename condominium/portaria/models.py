@@ -5,6 +5,16 @@ from comum.models import Base, Perfil
 
 class Post(Base):
 
+    TIPO_POST = (
+        ('ocorrencia', 'Ocorrencia'),
+        ('aviso', 'Aviso'),
+        ('entrada', 'Entrada'),
+    )
+
+    tipo = models.CharField('Tipo', max_length=64, choices=TIPO_POST, blank=False, null=False)
+    publico = models.BooleanField('Publico', default=False, blank=False, null=False)
+    informante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='ocorrencias', blank=False, null=False)
+
     descricao = models.CharField('Descricao', max_length=256, blank=True, null=True)
     foto = models.CharField('Foto', max_length=256, blank=True, null=True)
 
@@ -14,7 +24,7 @@ class Post(Base):
         verbose_name_plural = 'Posts'
 
 
-class Ocorrencia(Base):
+class Ocorrencia(Post):
 
     STATUS_OCORRENCIA = (
         ('resolvido', 'Resolvido'),
@@ -25,12 +35,7 @@ class Ocorrencia(Base):
     )
 
     status = models.CharField('Status', max_length=64, choices=STATUS_OCORRENCIA, default='aberta', blank=False, null=False)
-    descricao = models.CharField('Descricao', max_length=256, blank=False, null=False)
     localizacao = models.CharField('Localizacao', max_length=128, blank=True, null=True)
-    publico = models.BooleanField('Publico', default=False, blank=False, null=False)
-    informante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='ocorrencias', blank=False, null=False)
-
-    post = models.OneToOneField(Post, on_delete=models.CASCADE)
 
     class Meta:
 
@@ -55,7 +60,7 @@ class Comentario(Base):
         return self.descricao
 
 
-class Entrada(Base):
+class Entrada(Post):
 
     STATUS_ENTRADA = (
         ('informada', 'Informada'),
@@ -67,11 +72,7 @@ class Entrada(Base):
 
     data = models.DateField('Data', blank=False, null=False)
     hora = models.TimeField('Hora', blank=True, null=True)
-    descricao = models.CharField('Descricao', max_length=256, blank=False, null=False)
-    informante = models.ForeignKey(Perfil, on_delete = models.CASCADE, related_name = 'entradas', blank=False, null=False)
     status = models.CharField('Status', max_length=64, choices=STATUS_ENTRADA, default='informada', blank=False, null=False)
-
-    post = models.OneToOneField(Post, on_delete=models.CASCADE)
 
     class Meta:
 
@@ -82,7 +83,7 @@ class Entrada(Base):
         return self.descricao
 
 
-class Aviso(Base):
+class Aviso(Post):
 
     PRIORIDADE_AVISO = (
         ('baixa', 'Baixa'),
@@ -90,11 +91,7 @@ class Aviso(Base):
         ('urgente', 'Urgente'),
     )
 
-    descricao = models.CharField('Descricao', max_length=256, blank=False, null=False)
-    publico = models.BooleanField('Publico', default=False, blank=False, null=False)
     prioridade = models.CharField('Prioridade', choices=PRIORIDADE_AVISO, default='razoavel', max_length=256, blank=False, null=False)
-
-    post = models.OneToOneField(Post, on_delete=models.CASCADE)
 
     class Meta:
 
