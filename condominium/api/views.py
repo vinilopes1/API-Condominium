@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import  viewsets, authentication, permissions, status
 from rest_framework.response import Response
 
-from portaria.models import Ocorrencia, Comentario, Entrada
-from .serializers import OcorrenciaSerializer, OcorrenciaSimplesSerializer, EntradaSerializer, ComentarioSerializer
+from portaria.models import Ocorrencia, Comentario, Entrada, Aviso, Visitante, Post
+from .serializers import OcorrenciaSerializer, OcorrenciaSimplesSerializer, EntradaSerializer, ComentarioSerializer, PostSerializer, AvisoSerializer, VisitanteSerializer
 
 
 class DefaultMixin(object):
@@ -58,3 +58,19 @@ class ComentariosViewSet(DefaultMixin, viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+
+class PostViewSet(DefaultMixin, viewsets.ModelViewSet):
+
+    queryset = Post.objects.order_by('-criado_em')
+    serializer_class = PostSerializer
+
+
+class AvisoViewSet(DefaultMixin, viewsets.ModelViewSet):
+
+    queryset = Aviso.objects.order_by('-criado_em')
+    serializer_class = AvisoSerializer
+
+
+class VisitanteViewSet(DefaultMixin, viewsets.ModelViewSet):
+    queryset = Visitante.objects.order_by('-criado_em')
+    serializer_class = VisitanteSerializer
