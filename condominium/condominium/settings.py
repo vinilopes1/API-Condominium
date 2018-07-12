@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     #material design
     'material.theme.lightgreen',
     'material',
-    'material.frontend',
     'material.admin',
 
     'django.contrib.admin',
