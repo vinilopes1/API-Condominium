@@ -114,6 +114,8 @@ class Visitante(Base):
     telefone = models.CharField('Telefone', max_length=16, blank=False, null=False)
     data_nascimento = models.DateField('Data de nascimento', blank=False, null=False)
 
+    morador = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='visitantes', blank=False, null=False)
+
     class Meta:
         verbose_name = 'Visitante'
         verbose_name_plural = 'Visitantes'
