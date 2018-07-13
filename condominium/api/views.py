@@ -28,15 +28,34 @@ class OcorrenciaViewSet(DefaultMixin, viewsets.ModelViewSet):
         serializer = OcorrenciaSerializer(ocorrencia)
         return Response(serializer.data)
 
+    def create(self, request, *args, **kwargs):
+        serializer = OcorrenciaSerializer(data=request.data,
+                                       context={'logado': request.user.perfil})
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class EntradaViewSet(DefaultMixin, viewsets.ModelViewSet):
 
     queryset = Entrada.objects.order_by('-criado_em')
     serializer_class = EntradaSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = EntradaSerializer(data=request.data,
+                                       context={'logado': request.user.perfil})
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class ComentariosViewSet(DefaultMixin, viewsets.ModelViewSet):
 
+    queryset = Comentario.objects.order_by('-criado_em')
     serializer_class = ComentarioSerializer
 
     def create(self, request, pk, *args, **kwargs):
