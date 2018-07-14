@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import  viewsets, authentication, permissions, status
 from rest_framework.response import Response
 
-from portaria.models import Ocorrencia, Comentario, Entrada
-from .serializers import OcorrenciaSerializer, OcorrenciaSimplesSerializer, EntradaSerializer, ComentarioSerializer
+from portaria.models import Ocorrencia, Comentario, Entrada, Aviso, Visitante, Post
+from .serializers import OcorrenciaSerializer, OcorrenciaSimplesSerializer, EntradaSerializer, ComentarioSerializer, PostSerializer, AvisoSerializer, VisitanteSerializer
 
 
 class DefaultMixin(object):
@@ -28,15 +28,34 @@ class OcorrenciaViewSet(DefaultMixin, viewsets.ModelViewSet):
         serializer = OcorrenciaSerializer(ocorrencia)
         return Response(serializer.data)
 
+    def create(self, request, *args, **kwargs):
+        serializer = OcorrenciaSerializer(data=request.data,
+                                       context={'logado': request.user.perfil})
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class EntradaViewSet(DefaultMixin, viewsets.ModelViewSet):
 
     queryset = Entrada.objects.order_by('-criado_em')
     serializer_class = EntradaSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = EntradaSerializer(data=request.data,
+                                       context={'logado': request.user.perfil})
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class ComentariosViewSet(DefaultMixin, viewsets.ModelViewSet):
 
+    queryset = Comentario.objects.order_by('-criado_em')
     serializer_class = ComentarioSerializer
 
     def create(self, request, pk, *args, **kwargs):
@@ -58,3 +77,71 @@ class ComentariosViewSet(DefaultMixin, viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+
+class PostViewSet(DefaultMixin, viewsets.ModelViewSet):
+
+    queryset = Post.objects.order_by('-criado_em')
+    serializer_class = PostSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(Post.objects.filter(informante=request.user.perfil) or Post.objects.filter(publico=True))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class AvisoViewSet(DefaultMixin, viewsets.ModelViewSet):
+
+    queryset = Aviso.objects.order_by('-criado_em')
+    serializer_class = AvisoSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(Aviso.objects.filter(informante__condominio=request.user.perfil.condominio))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = AvisoSerializer(data=request.data,
+                                       context={'logado': request.user.perfil})
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class VisitanteViewSet(DefaultMixin, viewsets.ModelViewSet):
+
+    queryset = Visitante.objects.order_by('-criado_em')
+    serializer_class = VisitanteSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(Visitante.objects.filter(morador=request.user.perfil))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = VisitanteSerializer(data=request.data,
+                                       context={'logado': request.user.perfil})
+
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

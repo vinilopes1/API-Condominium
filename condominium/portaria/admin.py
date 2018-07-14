@@ -1,5 +1,5 @@
 from django.contrib import admin
-from portaria.models import Ocorrencia, Entrada, Comentario
+from portaria.models import Ocorrencia, Entrada, Comentario, Aviso, Visitante, Post
 
 
 class ComentarioOcorreniaInline(admin.TabularInline):
@@ -10,9 +10,16 @@ class ComentarioOcorreniaInline(admin.TabularInline):
 
 @admin.register(Ocorrencia)
 class OcorrenciaAdmin(admin.ModelAdmin):
-    list_display = ('status', 'descricao', 'informante', )
+    list_display = ('status', 'descricao', )
+    readonly_fields = ('informante', 'tipo', 'status')
 
     inlines = (ComentarioOcorreniaInline, )
+
+    def save_model(self, request, ocorrencia, form, change):
+        if not ocorrencia.pk:# and not request.user.perfil:
+            ocorrencia.tipo = 'ocorrencia'
+            ocorrencia.informante = request.user.perfil
+        ocorrencia.save()
 
 
 @admin.register(Entrada)
@@ -27,5 +34,33 @@ class EntradaAdmin(admin.ModelAdmin):
 
     def save_model(self, request, entrada, form, change):
         if not entrada.pk and not request.user.is_superuser:
+            entrada.tipo = 'entrada'
             entrada.informante = request.user.perfil
         entrada.save()
+
+
+@admin.register(Aviso)
+class AvisoAdmin(admin.ModelAdmin):
+    list_display = ('descricao', 'informante',)
+    readonly_fields = ('informante', )
+
+    def save_model(self, request, aviso, form, change):
+        if not aviso.pk and not request.user.perfil:
+            aviso.tipo = 'aviso'
+            aviso.informante = request.user.perfil
+        aviso.save()
+
+
+@admin.register(Visitante)
+class VisitanteAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'sexo', 'telefone', 'data_nascimento', 'morador',)
+
+    def save_model(self, request, visitante, form, change):
+        if not visitante.pk and not request.user.perfil:
+            visitante.morador = request.user.perfil
+        visitante.save()
+
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('tipo', 'descricao', 'informante', )

@@ -26,7 +26,7 @@ class ComentarioSerializer(serializers.ModelSerializer):
 
 class OcorrenciaSerializer(serializers.ModelSerializer):
 
-    comentarios = ComentarioSerializer(many=True)
+    comentarios = ComentarioSerializer(many=True, read_only=True)
 
     class Meta:
         model = Ocorrencia
@@ -43,30 +43,71 @@ class OcorrenciaSimplesSerializer(serializers.ModelSerializer):
                   'publico', 'informante')
         read_only_fields = ('id',)
 
+    def create(self, validated_data):
+        user_logado = self.context.get('logado')
+        validated_data['tipo'] = 'ocorrencia'
+        validated_data['informante'] = user_logado
+
+        ocorrencia = Ocorrencia.objects.create(**validated_data)
+        return ocorrencia
+
 
 class EntradaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Entrada
         fields = ('id', 'data', 'hora', 'descricao', 'informante', 'status', )
+        read_only_fields = ('informante', 'status')
+
+    def create(self, validated_data):
+        user_logado = self.context.get('logado')
+        validated_data['tipo'] = 'entrada'
+        validated_data['informante'] = user_logado
+
+        try:
+            entrada = Entrada.objects.create(**validated_data)
+        except:
+            raise exceptions.NotAcceptable(detail='Nao foi possivel adicionar.')
+        return entrada
 
 
 class AvisoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Aviso
-        fields = ('id', 'descricao', 'prioridade', )
+        fields = ('id', 'descricao', 'prioridade', 'informante', )
+        read_only_fields = ('id', 'informante', )
+
+    def create(self, validated_data):
+        user_logado = self.context.get('logado')
+        validated_data['informante'] = user_logado
+
+        try:
+            aviso = Aviso.objects.create(**validated_data)
+        except:
+            raise exceptions.NotAcceptable(detail='Nao foi possivel adicionar.')
+        return aviso
 
 
 class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'descricao', 'foto')
+        fields = ('id', 'descricao', 'publico', 'foto')
 
 
 class VisitanteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Visitante
-        fields = ('id', 'nome', 'sexo', 'telefone', 'data_nascimento', )
+        fields = ('id', 'nome', 'sexo', 'telefone', 'data_nascimento', 'morador', )
+
+    def create(self, validated_data):
+        user_logado = self.context.get('logado')
+        validated_data['morador'] = user_logado
+
+        try:
+            visitante = Visitante.objects.create(**validated_data)
+        except:
+            raise exceptions.NotAcceptable(detail='Nao foi possivel adicionar.')
+        return visitante
