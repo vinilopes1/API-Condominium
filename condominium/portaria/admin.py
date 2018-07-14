@@ -41,8 +41,8 @@ class EntradaAdmin(admin.ModelAdmin):
 
 @admin.register(Aviso)
 class AvisoAdmin(admin.ModelAdmin):
-    list_display = ('descricao', 'publico', 'informante',)
-    readonly_fields = ('tipo', 'informante')
+    list_display = ('descricao', 'informante',)
+    readonly_fields = ('informante', )
 
     def save_model(self, request, aviso, form, change):
         if not aviso.pk and not request.user.perfil:
