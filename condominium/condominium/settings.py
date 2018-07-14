@@ -34,9 +34,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
 
     #material design
-    'material.theme.lightgreen',
+    'material.theme.blue',
     'material',
-    'material.frontend',
     'material.admin',
 
     'django.contrib.admin',

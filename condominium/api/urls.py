@@ -6,6 +6,9 @@ from api import views
 router = DefaultRouter()
 router.register(r'ocorrencias', views.OcorrenciaViewSet)
 router.register(r'entradas', views.EntradaViewSet)
+router.register(r'posts', views.PostViewSet)
+router.register(r'avisos', views.AvisoViewSet)
+router.register(r'visitantes', views.VisitanteViewSet)
 
 urlpatterns = [
     url(r'^token/', obtain_auth_token, name='api-token'),
