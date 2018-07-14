@@ -13,13 +13,12 @@ class Post(Base):
 
     tipo = models.CharField('Tipo', max_length=64, choices=TIPO_POST, blank=False, null=False)
     publico = models.BooleanField('Publico', default=False, blank=False, null=False)
-    informante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='ocorrencias', blank=False, null=False)
+    informante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='posts', blank=False, null=False)
 
     descricao = models.CharField('Descricao', max_length=256, blank=True, null=True)
     foto = models.CharField('Foto', max_length=256, blank=True, null=True)
 
     class Meta:
-
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
 
@@ -38,7 +37,6 @@ class Ocorrencia(Post):
     localizacao = models.CharField('Localizacao', max_length=128, blank=True, null=True)
 
     class Meta:
-
         verbose_name = 'Ocorrência'
         verbose_name_plural = 'Ocorrências'
 
@@ -52,7 +50,6 @@ class Comentario(Base):
     ocorrencia = models.ForeignKey('Ocorrencia', on_delete = models.CASCADE, related_name = 'comentarios', blank=False, null=False)
 
     class Meta:
-
         verbose_name = 'Comentário'
         verbose_name_plural = 'Comentários'
 
@@ -75,7 +72,6 @@ class Entrada(Post):
     status = models.CharField('Status', max_length=64, choices=STATUS_ENTRADA, default='informada', blank=False, null=False)
 
     class Meta:
-
         verbose_name = 'Entrada'
         verbose_name_plural = 'Entradas'
 
@@ -83,7 +79,7 @@ class Entrada(Post):
         return self.descricao
 
 
-class Aviso(Post):
+class Aviso(Base):
 
     PRIORIDADE_AVISO = (
         ('baixa', 'Baixa'),
@@ -91,10 +87,11 @@ class Aviso(Post):
         ('urgente', 'Urgente'),
     )
 
+    informante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='avisos', blank=False, null=False)
+    descricao = models.CharField('Descricao', max_length=256, blank=True, null=True)
     prioridade = models.CharField('Prioridade', choices=PRIORIDADE_AVISO, default='razoavel', max_length=256, blank=False, null=False)
 
     class Meta:
-
         verbose_name = 'Aviso'
         verbose_name_plural = 'Avisos'
 
