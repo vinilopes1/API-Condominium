@@ -25,9 +25,11 @@ class CondominioAdmin(admin.ModelAdmin):
 class PerfilAdmin(admin.ModelAdmin):
     list_display = ('nome', 'sexo', 'telefone', 'data_nascimento', 'usuario', )
 
+    icon = '<i class="material-icons">account_box</i>'
+
     fieldsets = (
         ("Dados", {
-            'fields': ('usuario', ('telefone', 'data_nascimento',), ),
+            'fields': (('usuario', 'portaria'), ('telefone', 'data_nascimento',), ),
         }),
         ("Condomínio", {
             'fields': ('condominio', 'unidade_habitacional', ),
@@ -53,6 +55,8 @@ class PerfilAdmin(admin.ModelAdmin):
 class GrupoHabitacionalAdmin(admin.ModelAdmin):
     list_display = ('tipo', 'tipo_unidade', 'nome', 'logradouro', 'condominio', )
 
+    icon = '<i class="material-icons">domain</i>'
+
     fieldsets = (
         (None, {
             'fields': ('nome', ('tipo', 'tipo_unidade'), 'logradouro')
@@ -76,6 +80,8 @@ class GrupoHabitacionalAdmin(admin.ModelAdmin):
 @admin.register(UnidadeHabitacional)
 class UnidadadeHabitacionalAdmin(admin.ModelAdmin):
     list_display = ('nome', 'grupo_habitacional', 'proprietario', )
+
+    icon = '<i class="material-icons">home</i>'
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if not request.user.is_superuser:

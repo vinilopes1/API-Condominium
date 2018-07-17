@@ -13,6 +13,8 @@ class OcorrenciaAdmin(admin.ModelAdmin):
     list_display = ('status', 'descricao', )
     readonly_fields = ('informante', 'tipo', 'status')
 
+    icon = '<i class="material-icons">assignment</i>'
+
     inlines = (ComentarioOcorreniaInline, )
 
     def save_model(self, request, ocorrencia, form, change):
@@ -25,6 +27,8 @@ class OcorrenciaAdmin(admin.ModelAdmin):
 @admin.register(Entrada)
 class EntradaAdmin(admin.ModelAdmin):
     list_display = ('data', 'hora', 'descricao', 'informante', )
+
+    icon = '<i class="material-icons">input</i>'
 
     fieldsets = (
         (None, {
@@ -44,6 +48,8 @@ class AvisoAdmin(admin.ModelAdmin):
     list_display = ('descricao', 'informante',)
     readonly_fields = ('informante', )
 
+    icon = '<i class="material-icons">notifications</i>'
+
     def save_model(self, request, aviso, form, change):
         if not aviso.pk and not request.user.perfil:
             aviso.tipo = 'aviso'
@@ -55,6 +61,8 @@ class AvisoAdmin(admin.ModelAdmin):
 class VisitanteAdmin(admin.ModelAdmin):
     list_display = ('nome', 'sexo', 'telefone', 'data_nascimento', 'morador',)
 
+    icon = '<i class="material-icons">directions_walk</i>'
+
     def save_model(self, request, visitante, form, change):
         if not visitante.pk and not request.user.perfil:
             visitante.morador = request.user.perfil
@@ -64,3 +72,5 @@ class VisitanteAdmin(admin.ModelAdmin):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('tipo', 'descricao', 'informante', )
+
+    icon = '<i class="material-icons">description</i>'
