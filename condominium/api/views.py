@@ -28,6 +28,20 @@ class OcorrenciaViewSet(DefaultMixin, viewsets.ModelViewSet):
         serializer = OcorrenciaSerializer(ocorrencia)
         return Response(serializer.data)
 
+    def list(self, request, *args, **kwargs):
+        if request.user.perfil.portaria:
+            queryset = self.filter_queryset(Ocorrencia.objects.filter(informante__condominio=request.user.perfil.condominio))
+        else:
+            queryset = self.filter_queryset(Ocorrencia.objects.filter(informante=request.user.perfil) or Ocorrencia.objects.filter(publico=True))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
     def create(self, request, *args, **kwargs):
         serializer = OcorrenciaSerializer(data=request.data,
                                        context={'logado': request.user.perfil})
@@ -42,6 +56,20 @@ class EntradaViewSet(DefaultMixin, viewsets.ModelViewSet):
 
     queryset = Entrada.objects.order_by('-criado_em')
     serializer_class = EntradaSerializer
+
+    def list(self, request, *args, **kwargs):
+        if request.user.perfil.portaria:
+            queryset = self.filter_queryset(Entrada.objects.filter(informante__condominio=request.user.perfil.condominio))
+        else:
+            queryset = self.filter_queryset(Entrada.objects.filter(informante=request.user.perfil) or Entrada.objects.filter(publico=True))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         serializer = EntradaSerializer(data=request.data,
@@ -127,7 +155,10 @@ class VisitanteViewSet(DefaultMixin, viewsets.ModelViewSet):
     serializer_class = VisitanteSerializer
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(Visitante.objects.filter(morador=request.user.perfil))
+        if request.user.perfil.portaria:
+            queryset = self.filter_queryset(Visitante.objects.filter(morador__condominio=request.user.perfil.condominio))
+        else:
+            queryset = self.filter_queryset(Visitante.objects.filter(morador=request.user.perfil))
 
         page = self.paginate_queryset(queryset)
         if page is not None:
