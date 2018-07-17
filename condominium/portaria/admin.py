@@ -2,7 +2,7 @@ from django.contrib import admin
 from portaria.models import Ocorrencia, Entrada, Comentario, Aviso, Visitante, Post
 
 
-class ComentarioOcorreniaInline(admin.TabularInline):
+class ComentarioOcorrenciaInline(admin.TabularInline):
     model = Comentario
     fields = ('descricao', )
     extra = 1
@@ -15,10 +15,18 @@ class OcorrenciaAdmin(admin.ModelAdmin):
 
     icon = '<i class="material-icons">assignment</i>'
 
-    inlines = (ComentarioOcorreniaInline, )
+    inlines = (ComentarioOcorrenciaInline,)
+
+    def get_queryset(self, request):
+        qs = super(OcorrenciaAdmin, self).get_queryset(request)
+
+        if not request.user.is_superuser:
+            qs = qs.filter(informante__condominio=request.user.perfil.condominio)
+
+        return qs
 
     def save_model(self, request, ocorrencia, form, change):
-        if not ocorrencia.pk:# and not request.user.perfil:
+        if not ocorrencia.pk and not request.user.perfil:
             ocorrencia.tipo = 'ocorrencia'
             ocorrencia.informante = request.user.perfil
         ocorrencia.save()
@@ -36,6 +44,14 @@ class EntradaAdmin(admin.ModelAdmin):
         }),
     )
 
+    def get_queryset(self, request):
+        qs = super(EntradaAdmin, self).get_queryset(request)
+
+        if not request.user.is_superuser:
+            qs = qs.filter(informante__condominio=request.user.perfil.condominio)
+
+        return qs
+
     def save_model(self, request, entrada, form, change):
         if not entrada.pk and not request.user.is_superuser:
             entrada.tipo = 'entrada'
@@ -50,6 +66,14 @@ class AvisoAdmin(admin.ModelAdmin):
 
     icon = '<i class="material-icons">notifications</i>'
 
+    def get_queryset(self, request):
+        qs = super(AvisoAdmin, self).get_queryset(request)
+
+        if not request.user.is_superuser:
+            qs = qs.filter(informante__condominio=request.user.perfil.condominio)
+
+        return qs
+
     def save_model(self, request, aviso, form, change):
         if not aviso.pk and not request.user.perfil:
             aviso.tipo = 'aviso'
@@ -63,6 +87,14 @@ class VisitanteAdmin(admin.ModelAdmin):
 
     icon = '<i class="material-icons">directions_walk</i>'
 
+    def get_queryset(self, request):
+        qs = super(VisitanteAdmin, self).get_queryset(request)
+
+        if not request.user.is_superuser:
+            qs = qs.filter(morador__condominio=request.user.perfil.condominio)
+
+        return qs
+
     def save_model(self, request, visitante, form, change):
         if not visitante.pk and not request.user.perfil:
             visitante.morador = request.user.perfil
@@ -74,3 +106,11 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('tipo', 'descricao', 'informante', )
 
     icon = '<i class="material-icons">description</i>'
+
+    def get_queryset(self, request):
+        qs = super(PostAdmin, self).get_queryset(request)
+
+        if not request.user.is_superuser:
+            qs = qs.filter(informante__condominio=request.user.perfil.condominio)
+
+        return qs
