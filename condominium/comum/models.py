@@ -99,6 +99,7 @@ class Perfil(Base):
     telefone = models.CharField('Telefone', max_length=16, blank=False, null=False)
     data_nascimento = models.DateField('Data de nascimento', blank=False, null=False)
 
+    portaria = models.BooleanField('Portaria', default=False, blank=False, null=False)
     unidade_habitacional = models.ForeignKey('UnidadeHabitacional', related_name= 'moradores', blank=True, null=True)
     usuario = models.OneToOneField(User, related_name='perfil')
     condominio = models.ForeignKey('Condominio', related_name='perfis', on_delete=models.CASCADE, blank=False, null=True)
