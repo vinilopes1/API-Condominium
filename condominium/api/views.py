@@ -112,7 +112,7 @@ class PostViewSet(DefaultMixin, viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(Post.objects.filter(informante=request.user.perfil) or Post.objects.filter(publico=True))
+        queryset = self.filter_queryset(Post.objects.filter(informante=request.user.perfil) | Post.objects.filter(publico=True))
 
         page = self.paginate_queryset(queryset)
         if page is not None:
