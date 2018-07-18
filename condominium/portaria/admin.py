@@ -26,7 +26,7 @@ class OcorrenciaAdmin(admin.ModelAdmin):
         return qs
 
     def save_model(self, request, ocorrencia, form, change):
-        if not ocorrencia.pk and not request.user.perfil:
+        if not ocorrencia.pk and not request.user.is_superuser:
             ocorrencia.tipo = 'ocorrencia'
             ocorrencia.informante = request.user.perfil
         ocorrencia.save()
