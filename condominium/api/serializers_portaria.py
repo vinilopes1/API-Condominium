@@ -1,5 +1,6 @@
 from rest_framework import serializers, exceptions
 from portaria.models import Ocorrencia, Comentario, Entrada, Aviso, Post, Visitante
+from .serializers_comum import PerfilSerializer
 
 
 class ComentarioSerializer(serializers.ModelSerializer):
@@ -27,6 +28,7 @@ class ComentarioSerializer(serializers.ModelSerializer):
 class OcorrenciaSerializer(serializers.ModelSerializer):
 
     comentarios = ComentarioSerializer(many=True, read_only=True)
+    informante = PerfilSerializer(many=False, read_only=True)
 
     class Meta:
         model = Ocorrencia
@@ -36,6 +38,8 @@ class OcorrenciaSerializer(serializers.ModelSerializer):
 
 
 class OcorrenciaSimplesSerializer(serializers.ModelSerializer):
+
+    informante = PerfilSerializer(many=False, read_only=True)
 
     class Meta:
         model = Ocorrencia
@@ -53,6 +57,8 @@ class OcorrenciaSimplesSerializer(serializers.ModelSerializer):
 
 
 class EntradaSerializer(serializers.ModelSerializer):
+
+    informante = PerfilSerializer(many=False, read_only=True)
 
     class Meta:
         model = Entrada
@@ -73,6 +79,8 @@ class EntradaSerializer(serializers.ModelSerializer):
 
 class AvisoSerializer(serializers.ModelSerializer):
 
+    informante = PerfilSerializer(many=False, read_only=True)
+
     class Meta:
         model = Aviso
         fields = ('id', 'descricao', 'prioridade', 'informante', )
@@ -91,12 +99,16 @@ class AvisoSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
+    informante = PerfilSerializer(many=False, read_only=True)
+
     class Meta:
         model = Post
-        fields = ('id', 'descricao', 'publico', 'foto')
+        fields = ('id', 'descricao', 'informante', 'data_hora', 'tipo', 'publico', 'foto', )
 
 
 class VisitanteSerializer(serializers.ModelSerializer):
+
+    morador = PerfilSerializer(many=False, read_only=True)
 
     class Meta:
         model = Visitante
