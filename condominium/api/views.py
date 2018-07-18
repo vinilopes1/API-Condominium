@@ -3,7 +3,7 @@ from rest_framework import  viewsets, authentication, permissions, status
 from rest_framework.response import Response
 
 from portaria.models import Ocorrencia, Comentario, Entrada, Aviso, Visitante, Post
-from .serializers import OcorrenciaSerializer, OcorrenciaSimplesSerializer, EntradaSerializer, ComentarioSerializer, PostSerializer, AvisoSerializer, VisitanteSerializer
+from .serializers_portaria import OcorrenciaSerializer, OcorrenciaSimplesSerializer, EntradaSerializer, ComentarioSerializer, PostSerializer, AvisoSerializer, VisitanteSerializer
 
 
 class DefaultMixin(object):
