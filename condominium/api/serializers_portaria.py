@@ -36,6 +36,14 @@ class OcorrenciaSerializer(serializers.ModelSerializer):
                   'publico', 'informante', 'comentarios')
         read_only_fields = ('id',)
 
+    def create(self, validated_data):
+        user_logado = self.context.get('logado')
+        validated_data['tipo'] = 'ocorrencia'
+        validated_data['informante'] = user_logado
+
+        ocorrencia = Ocorrencia.objects.create(**validated_data)
+        return ocorrencia
+
 
 class OcorrenciaSimplesSerializer(serializers.ModelSerializer):
 
@@ -46,14 +54,6 @@ class OcorrenciaSimplesSerializer(serializers.ModelSerializer):
         fields = ('id', 'status', 'descricao', 'localizacao',
                   'publico', 'informante')
         read_only_fields = ('id',)
-
-    def create(self, validated_data):
-        user_logado = self.context.get('logado')
-        validated_data['tipo'] = 'ocorrencia'
-        validated_data['informante'] = user_logado
-
-        ocorrencia = Ocorrencia.objects.create(**validated_data)
-        return ocorrencia
 
 
 class EntradaSerializer(serializers.ModelSerializer):
