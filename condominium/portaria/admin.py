@@ -75,7 +75,7 @@ class AvisoAdmin(admin.ModelAdmin):
         return qs
 
     def save_model(self, request, aviso, form, change):
-        if not aviso.pk and not request.user.perfil:
+        if not aviso.pk and not request.user.is_superuser:
             aviso.tipo = 'aviso'
             aviso.informante = request.user.perfil
         aviso.save()
@@ -96,7 +96,7 @@ class VisitanteAdmin(admin.ModelAdmin):
         return qs
 
     def save_model(self, request, visitante, form, change):
-        if not visitante.pk and not request.user.perfil:
+        if not visitante.pk and not request.user.is_superuser:
             visitante.morador = request.user.perfil
         visitante.save()
 
