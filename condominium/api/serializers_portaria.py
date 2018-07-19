@@ -53,7 +53,7 @@ class OcorrenciaSimplesSerializer(serializers.ModelSerializer):
         model = Ocorrencia
         fields = ('id', 'status', 'descricao', 'localizacao',
                   'publico', 'informante')
-        read_only_fields = ('id',)
+        read_only_fields = ('id', 'status', 'informante',)
 
 
 class EntradaSerializer(serializers.ModelSerializer):
