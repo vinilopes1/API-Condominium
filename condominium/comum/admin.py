@@ -6,6 +6,8 @@ from .models import Condominio, Perfil, GrupoHabitacional, UnidadeHabitacional
 class CondominioAdmin(admin.ModelAdmin):
     list_display = ('cnpj', 'nome', 'endereco', 'sindico',)
 
+    icon = '<i class="material-icons">location_city</i>'
+
     def get_queryset(self, request):
         qs = super(CondominioAdmin, self).get_queryset(request)
 
