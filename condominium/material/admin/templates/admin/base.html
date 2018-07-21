@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-        {% block favicon %}<link href="{% static 'material/imgs/favicon.png' %}" rel="shortcut icon">{% endblock %}
+        {% block favicon %}<link href="{% static 'material/imgs/ic_condomais2.png' %}" rel="shortcut icon">{% endblock %}
         <title>Condomais</title>
         {% block css %}
         {% include 'admin/includes/material_css.html' %}
@@ -38,16 +38,16 @@
                 {% block sidenav_header %}
                 <li>
                     <div class="userView">
-                        <img class="background" src="{% static 'material/imgs/sidenav.svg' %}">
+                        <img class="background" width="150%" src="{% static 'material/imgs/sidenav.svg' %}">
                         {% block userphoto %}
                         {% if user.photo.url %}
                         <a href="#"><img class="circle" src="{{ user.photo.url }}"></a>
                         {% else %}
-                        <a href="#"><img class="circle" src="{% static 'material/imgs/user.png' %}"></a>
+                        <a href="#"><img height="30%" width="60%" src="{% static 'material/imgs/logo_condomais_final3.png' %}"></a>
                         {% endif %}
                         {% endblock %}
-                        <a href="#"><span class="white-text name">{{ request.user.get_username|title }}</span></a>
-                        <a href="#"><span class="white-text email">{{ request.user.get_full_name|title }}</span></a>
+                        <a href="#"><span class="white-text name">{{ request.user.perfil.nome|title }}</span></a>
+                        <a href="#"><span class="white-text email">{{ request.user.perfil.condominio.nome|title }}</span></a>
                     </div>
                 </li>
                 {% endblock %}
@@ -86,7 +86,7 @@
                         {% if not is_popup %}<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>{% endif %}
                         <div class="brand-logo">
                             {% block page_title %}
-                            <a href="/" class="page-title">{% block brand-logo %}{% trans 'Administration' %}{% endblock %}</a>
+                            <a href="/" class="page-title">{% block brand-logo %}{% trans 'Condomais Admin' %}{% endblock %}</a>
                             {% endblock %}
                         </div>
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
