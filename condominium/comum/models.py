@@ -82,8 +82,8 @@ class UnidadeHabitacional(Base):
     proprietario = models.ForeignKey('Perfil', on_delete=models.SET_NULL, related_name='unidades_habitacionais', blank=True, null=True)
 
     class Meta:
-        verbose_name = 'Unidade habitacional'
-        verbose_name_plural = 'Unidades habitacionais'
+        verbose_name = 'Unidade Habitacional'
+        verbose_name_plural = 'Unidades Habitacionais'
         ordering = ('nome', )
         unique_together = (('nome', 'grupo_habitacional'),)
 
