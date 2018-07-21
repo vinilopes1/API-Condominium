@@ -22,8 +22,11 @@ class Base(models.Model):
     class Meta:
         abstract = True
 
-    def data_hora(self):
-        return self.criado_em.__format__("%d/%m/%Y - %H:%M").__str__()
+    def get_criado_em(self, format):
+        return self.criado_em.__format__(format).__str__()
+
+    def get_atualizado_em(self, format):
+        return self.atualizado_em.__format__(format).__str__()
 
 
 class Condominio(Base):
