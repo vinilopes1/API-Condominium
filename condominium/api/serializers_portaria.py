@@ -103,7 +103,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'descricao', 'informante', 'data_hora', 'tipo', 'publico', 'foto', )
+        fields = ('id', 'descricao', 'informante', 'atualizado_em_data_br', 'atualizado_em_hora_br', 'tipo', 'publico', 'foto', )
 
 
 class VisitanteSerializer(serializers.ModelSerializer):
