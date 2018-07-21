@@ -108,7 +108,7 @@ class ComentariosViewSet(DefaultMixin, viewsets.ModelViewSet):
 
 class PostViewSet(DefaultMixin, viewsets.ModelViewSet):
 
-    queryset = Post.objects.order_by('criado_em')
+    queryset = Post.objects.order_by('atualizado_em')
     serializer_class = PostSerializer
 
     def list(self, request, *args, **kwargs):
