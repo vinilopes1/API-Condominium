@@ -23,7 +23,7 @@ class Post(Base):
         verbose_name_plural = 'Posts'
 
     def atualizado_em_data_br(self):
-        return self.get_atualizado_em("%d/%m/%Y")
+        return self.get_atualizado_em("%d/%b")
 
     def atualizado_em_hora_br(self):
         return self.get_atualizado_em("%H:%M")
