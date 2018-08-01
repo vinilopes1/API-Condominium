@@ -115,7 +115,10 @@ class Perfil(Base):
         verbose_name_plural = 'Perfis'
 
     def __str__(self):
-        return self.nome()
+        return "%s %s" % (self.nome(), self.sobrenome())
 
     def nome(self):
-        return '%s %s' % (self.usuario.first_name, self.usuario.last_name)
+        return self.usuario.first_name
+
+    def sobrenome(self):
+        return self.usuario.last_name
