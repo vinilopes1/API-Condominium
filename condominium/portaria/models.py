@@ -23,10 +23,13 @@ class Post(Base):
         verbose_name_plural = 'Posts'
 
     def atualizado_em_data_br(self):
-        return self.get_atualizado_em("%d/%b")
+        return self.get_atualizado_em("%d/%B")
 
     def atualizado_em_hora_br(self):
         return self.get_atualizado_em("%H:%M")
+
+    def status_post(self):
+        return "Entrada %s" % self.entrada.status if self.tipo == "entrada" else "Ocorrência %s" % self.ocorrencia.status
 
 
 class Ocorrencia(Post):
