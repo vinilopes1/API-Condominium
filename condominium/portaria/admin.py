@@ -103,7 +103,7 @@ class VisitanteAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('tipo', 'descricao', 'atualizado_em_hora_br', 'informante', )
+    list_display = ('status_post', 'descricao', 'atualizado_em_data_br',  'atualizado_em_hora_br', 'informante', )
 
     icon = '<i class="material-icons">description</i>'
 

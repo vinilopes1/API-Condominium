@@ -1,5 +1,7 @@
 from rest_framework import serializers, exceptions
 from portaria.models import Ocorrencia, Comentario, Entrada, Aviso, Post, Visitante
+
+from comum.models import Perfil
 from .serializers_comum import PerfilSerializer
 
 
@@ -62,7 +64,7 @@ class EntradaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Entrada
-        fields = ('id', 'data', 'hora', 'descricao', 'informante', 'status', )
+        fields = ('id', 'data_entrada', 'hora_entrada', 'descricao', 'informante', 'status',)
         read_only_fields = ('informante', 'status')
 
     def create(self, validated_data):
@@ -103,7 +105,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'descricao', 'informante', 'atualizado_em_data_br', 'atualizado_em_hora_br', 'tipo', 'publico', 'foto', )
+        fields = ('id', 'descricao', 'informante', 'atualizado_em_data_br', 'atualizado_em_hora_br', 'status_post', 'tipo', 'publico', 'foto', )
 
 
 class VisitanteSerializer(serializers.ModelSerializer):

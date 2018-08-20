@@ -23,10 +23,13 @@ class Post(Base):
         verbose_name_plural = 'Posts'
 
     def atualizado_em_data_br(self):
-        return self.get_atualizado_em("%d/%b")
+        return self.get_atualizado_em("%d de %B")
 
     def atualizado_em_hora_br(self):
         return self.get_atualizado_em("%H:%M")
+
+    def status_post(self):
+        return "Entrada %s" % self.entrada.status if self.tipo == "entrada" else "Ocorrência %s" % self.ocorrencia.status
 
 
 class Ocorrencia(Post):
@@ -80,6 +83,12 @@ class Entrada(Post):
     class Meta:
         verbose_name = 'Entrada'
         verbose_name_plural = 'Entradas'
+
+    def hora_entrada(self):
+        return self.get_atualizado_em("%Hh %Mmin")
+
+    def data_entrada(self):
+        return self.get_atualizado_em("%d de %B")
 
     def __str__(self):
         return self.descricao
