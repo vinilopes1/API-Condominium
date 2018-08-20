@@ -84,6 +84,12 @@ class Entrada(Post):
         verbose_name = 'Entrada'
         verbose_name_plural = 'Entradas'
 
+    def hora_entrada(self):
+        return self.get_atualizado_em("%Hh %Mmin")
+
+    def data_entrada(self):
+        return self.get_atualizado_em("%d de %B")
+
     def __str__(self):
         return self.descricao
 
