@@ -102,10 +102,14 @@ class AvisoSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
 
     informante = PerfilSerializer(many=False, read_only=True)
+    foto = serializers.ImageField(max_length=None, use_url=True)
 
     class Meta:
         model = Post
         fields = ('id', 'descricao', 'informante', 'atualizado_em_data_br', 'atualizado_em_hora_br', 'status_post', 'tipo', 'publico', 'foto', )
+
+    def create(self, validated_data):
+        print(validated_data)
 
 
 class VisitanteSerializer(serializers.ModelSerializer):

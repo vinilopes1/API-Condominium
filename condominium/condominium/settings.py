@@ -136,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'America/Sao_Paulo'
+TIMEZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -151,6 +151,9 @@ pt_BR_formats.DATE_FORMAT = "d/b/Y"
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # URL Login/Logout
 LOGIN_URL = 'admin/login/'

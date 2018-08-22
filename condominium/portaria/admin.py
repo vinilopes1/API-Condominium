@@ -40,7 +40,7 @@ class EntradaAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ( ('data', 'hora',), 'descricao', )
+            'fields': ( ('data', 'hora',), 'descricao', 'status',)
         }),
     )
 

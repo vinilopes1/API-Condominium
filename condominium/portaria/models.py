@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from comum.models import Base, Perfil
+from rest_framework.fields import ImageField
 
 
 class Post(Base):
@@ -16,14 +17,14 @@ class Post(Base):
     informante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='posts', blank=False, null=False)
 
     descricao = models.CharField('Descricao', max_length=256, blank=True, null=True)
-    foto = models.CharField('Foto', max_length=256, blank=True, null=True)
+    foto = models.ImageField(upload_to='imgs', default='imgs/none/no_image.png')
 
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
 
     def atualizado_em_data_br(self):
-        return self.get_atualizado_em("%d de %B")
+        return self.get_atualizado_em("%d de %F ")
 
     def atualizado_em_hora_br(self):
         return self.get_atualizado_em("%H:%M")
