@@ -2,7 +2,7 @@ from rest_framework import serializers, exceptions
 from portaria.models import Ocorrencia, Comentario, Entrada, Aviso, Post, Visitante
 
 from comum.models import Perfil
-from .serializers_comum import PerfilSerializer
+from .serializers_comum import PerfilSerializer, UnidadeHabitacionalSerializer
 
 
 class ComentarioSerializer(serializers.ModelSerializer):
@@ -115,6 +115,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class VisitanteSerializer(serializers.ModelSerializer):
 
+    unidade_habitacional = UnidadeHabitacionalSerializer(many=False, read_only= True)
     class Meta:
         model = Visitante
         fields = ('id', 'nome', 'sexo', 'telefone', 'data_nascimento', 'unidade_habitacional', )

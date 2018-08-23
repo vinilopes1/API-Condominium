@@ -89,6 +89,13 @@ class UnidadeHabitacional(Base):
         ordering = ('nome', )
         unique_together = (('nome', 'grupo_habitacional'),)
 
+    # def moradores(self):
+    #     grupo_moradores = " "
+    #     for morador in self.moradores:
+    #         grupo_moradores + morador + " "
+    #
+    #     return grupo_moradores
+
     def __str__(self):
         return "%s %s - %s %s" % (self.grupo_habitacional.tipo, self.grupo_habitacional.nome, self.grupo_habitacional.tipo_unidade, self.nome)
 
