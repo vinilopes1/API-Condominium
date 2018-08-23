@@ -31,15 +31,15 @@ class OcorrenciaSerializer(serializers.ModelSerializer):
 
     comentarios = ComentarioSerializer(many=True, read_only=True)
     informante = PerfilSerializer(many=False, read_only=True)
-    foto = serializers.ImageField(max_length=None, use_url=True)
 
     class Meta:
         model = Ocorrencia
         fields = ('id', 'status', 'descricao', 'localizacao',
-                  'publico', 'informante', 'comentarios', 'foto',  )
+                  'publico', 'informante', 'comentarios',)
         read_only_fields = ('id',)
 
     def create(self, validated_data):
+        print(validated_data)
         user_logado = self.context.get('logado')
         validated_data['tipo'] = 'ocorrencia'
         validated_data['informante'] = user_logado
@@ -127,5 +127,5 @@ class VisitanteSerializer(serializers.ModelSerializer):
         try:
             visitante = Visitante.objects.create(**validated_data)
         except:
-            raise exceptions.NotAcceptable(detail='Nao foi possivel adicionar.')
+            raise exceptions.NotAcceptable(detail='Nao foi possivel adicionar')
         return visitante

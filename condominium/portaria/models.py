@@ -93,14 +93,30 @@ class Entrada(Post):
         return self.get_atualizado_em("%d de %B")
 
     def liberar_entrada(self):
+        if self.status == 'informada':
+            self.status = 'liberada'
+            self.save()
+            return "Entrada liberada"
 
-        self.status = 'liberada'
-        self.save()
+        return "Não foi possivel liberar esta entrada"
+
 
     def finalizar_entrada(self):
 
-        self.status = 'atendida'
-        self.save()
+        if self.status == 'liberada':
+            self.status = 'atendida'
+            self.save()
+            return "Entrada finalizada"
+
+        return "Não foi possivel finalizar esta entrada"
+
+    def cancelar_entrada(self):
+        if self.status == 'informada':
+            self.status = 'cancelada'
+            self.save()
+            return "Entrada cancelada"
+
+        return "Não foi possivel cancelar esta entrada"
 
     def __str__(self):
         return self.descricao
