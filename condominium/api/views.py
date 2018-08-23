@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import  viewsets, authentication, permissions, status
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
 from portaria.models import Ocorrencia, Comentario, Entrada, Aviso, Visitante, Post
 from .serializers_portaria import OcorrenciaSerializer, OcorrenciaSimplesSerializer, EntradaSerializer, ComentarioSerializer, PostSerializer, AvisoSerializer, VisitanteSerializer
@@ -46,6 +47,8 @@ class OcorrenciaViewSet(DefaultMixin, viewsets.ModelViewSet):
         serializer = OcorrenciaSerializer(data=request.data,
                                        context={'logado': request.user.perfil})
 
+        print(serializer)
+
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -79,6 +82,39 @@ class EntradaViewSet(DefaultMixin, viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    @api_view()
+    @authentication_classes(authentication_classes=DefaultMixin.authentication_classes)
+    @permission_classes(permission_classes=DefaultMixin.permission_classes)
+    def liberar_entrada(request, entrada_pk):
+        try:
+            entrada = Entrada.objects.get(pk=entrada_pk)
+            mensagem = entrada.liberar_entrada()
+            return Response({"detail": mensagem}, status=status.HTTP_200_OK)
+        except:
+            return Response({"detail": "Entrada não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+    @api_view()
+    @authentication_classes(authentication_classes=DefaultMixin.authentication_classes)
+    @permission_classes(permission_classes=DefaultMixin.permission_classes)
+    def finalizar_entrada(request, entrada_pk):
+        try:
+            entrada = Entrada.objects.get(pk=entrada_pk)
+            mensagem = entrada.finalizar_entrada()
+            return Response({"detail": mensagem}, status=status.HTTP_200_OK)
+        except:
+            return Response({"detail": "Entrada não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+    @api_view()
+    @authentication_classes(authentication_classes=DefaultMixin.authentication_classes)
+    @permission_classes(permission_classes=DefaultMixin.permission_classes)
+    def cancelar_entrada(request, entrada_pk):
+        try:
+            entrada = Entrada.objects.get(pk=entrada_pk)
+            mensagem = entrada.cancelar_entrada()
+            return Response({"detail": mensagem}, status=status.HTTP_200_OK)
+        except:
+            return Response({"detail": "Entrada não encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class ComentariosViewSet(DefaultMixin, viewsets.ModelViewSet):

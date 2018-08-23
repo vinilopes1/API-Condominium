@@ -15,5 +15,9 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^ocorrencias/(?P<pk>\d+)/comentarios/$',
         views.ComentariosViewSet.as_view({'post': 'create', 'get': 'list'}),
-        name='comentarios')
+        name='comentarios'),
+
+    url(r'^entradas/(?P<entrada_pk>\d+)/liberar/$', views.EntradaViewSet.liberar_entrada, name='liberar'),
+    url(r'^entradas/(?P<entrada_pk>\d+)/cancelar/$', views.EntradaViewSet.cancelar_entrada, name='cancelar'),
+    url(r'^entradas/(?P<entrada_pk>\d+)/finalizar/$', views.EntradaViewSet.finalizar_entrada, name='finalizar'),
 ]
