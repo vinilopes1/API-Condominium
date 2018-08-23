@@ -83,7 +83,7 @@ class AvisoAdmin(admin.ModelAdmin):
 
 @admin.register(Visitante)
 class VisitanteAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'sexo', 'telefone', 'data_nascimento', 'morador',)
+    list_display = ('nome', 'sexo', 'telefone', 'data_nascimento', 'unidade_habitacional',)
 
     icon = '<i class="material-icons">directions_walk</i>'
 
@@ -97,7 +97,7 @@ class VisitanteAdmin(admin.ModelAdmin):
 
     def save_model(self, request, visitante, form, change):
         if not visitante.pk and not request.user.is_superuser:
-            visitante.morador = request.user.perfil
+            visitante.unidade_habitacional = request.user.perfil.unidade_habitacional
         visitante.save()
 
 

@@ -156,9 +156,9 @@ class VisitanteViewSet(DefaultMixin, viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         if request.user.perfil.portaria:
-            queryset = self.filter_queryset(Visitante.objects.filter(morador__condominio=request.user.perfil.condominio))
+            queryset = self.filter_queryset(Visitante.objects.filter(unidade_habitacional__grupo_habitacional__condominio=request.user.perfil.condominio))
         else:
-            queryset = self.filter_queryset(Visitante.objects.filter(morador=request.user.perfil))
+            queryset = self.filter_queryset(Visitante.objects.filter(unidade_habitacional = request.user.perfil.unidade_habitacional))
 
         page = self.paginate_queryset(queryset)
         if page is not None:

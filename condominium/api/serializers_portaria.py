@@ -31,11 +31,12 @@ class OcorrenciaSerializer(serializers.ModelSerializer):
 
     comentarios = ComentarioSerializer(many=True, read_only=True)
     informante = PerfilSerializer(many=False, read_only=True)
+    foto = serializers.ImageField(max_length=None, use_url=True)
 
     class Meta:
         model = Ocorrencia
         fields = ('id', 'status', 'descricao', 'localizacao',
-                  'publico', 'informante', 'comentarios')
+                  'publico', 'informante', 'comentarios', 'foto',  )
         read_only_fields = ('id',)
 
     def create(self, validated_data):
@@ -54,7 +55,7 @@ class OcorrenciaSimplesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ocorrencia
         fields = ('id', 'status', 'descricao', 'localizacao',
-                  'publico', 'informante')
+                  'publico', 'informante',  )
         read_only_fields = ('id', 'status', 'informante',)
 
 
@@ -64,7 +65,7 @@ class EntradaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Entrada
-        fields = ('id', 'data_entrada', 'hora_entrada', 'descricao', 'informante', 'status',)
+        fields = ('id', 'data_entrada', 'hora_entrada', 'descricao', 'informante', 'data', 'hora', 'status',)
         read_only_fields = ('informante', 'status')
 
     def create(self, validated_data):
@@ -104,25 +105,23 @@ class PostSerializer(serializers.ModelSerializer):
     informante = PerfilSerializer(many=False, read_only=True)
     foto = serializers.ImageField(max_length=None, use_url=True)
 
+
     class Meta:
         model = Post
         fields = ('id', 'descricao', 'informante', 'atualizado_em_data_br', 'atualizado_em_hora_br', 'status_post', 'tipo', 'publico', 'foto', )
 
-    def create(self, validated_data):
-        print(validated_data)
+
 
 
 class VisitanteSerializer(serializers.ModelSerializer):
 
-    morador = PerfilSerializer(many=False, read_only=True)
-
     class Meta:
         model = Visitante
-        fields = ('id', 'nome', 'sexo', 'telefone', 'data_nascimento', 'morador', )
+        fields = ('id', 'nome', 'sexo', 'telefone', 'data_nascimento', 'unidade_habitacional', )
 
     def create(self, validated_data):
         user_logado = self.context.get('logado')
-        validated_data['morador'] = user_logado
+        validated_data['unidade_habitacional'] = user_logado.unidade_habitacional.pk
 
         try:
             visitante = Visitante.objects.create(**validated_data)

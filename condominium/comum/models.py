@@ -80,7 +80,6 @@ class GrupoHabitacional(Base):
 class UnidadeHabitacional(Base):
 
     nome = models.CharField(max_length=16, blank=False, null=False)
-
     grupo_habitacional = models.ForeignKey('GrupoHabitacional', on_delete=models.CASCADE, related_name='unidades_habitacionais', blank=False, null=False)
     proprietario = models.ForeignKey('Perfil', on_delete=models.SET_NULL, related_name='unidades_habitacionais', blank=True, null=True)
 

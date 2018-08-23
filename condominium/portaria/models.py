@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.db import models
-from comum.models import Base, Perfil
+from comum.models import Base, Perfil, UnidadeHabitacional
 from rest_framework.fields import ImageField
 
 
@@ -72,6 +72,7 @@ class Entrada(Post):
     STATUS_ENTRADA = (
         ('informada', 'Informada'),
         ('lida', 'Lida'),
+        ('liberada', 'Liberada'),
         ('atendida', 'Atendida'),
         ('cancelada', 'Cancelada'),
         ('expirada', 'Expirada'),
@@ -90,6 +91,16 @@ class Entrada(Post):
 
     def data_entrada(self):
         return self.get_atualizado_em("%d de %B")
+
+    def liberar_entrada(self):
+
+        self.status = 'liberada'
+        self.save()
+
+    def finalizar_entrada(self):
+
+        self.status = 'atendida'
+        self.save()
 
     def __str__(self):
         return self.descricao
@@ -127,7 +138,7 @@ class Visitante(Base):
     telefone = models.CharField('Telefone', max_length=16, blank=False, null=False)
     data_nascimento = models.DateField('Data de nascimento', blank=False, null=False)
 
-    morador = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='visitantes', blank=False, null=False)
+    unidade_habitacional = models.ForeignKey(UnidadeHabitacional, on_delete=models.CASCADE, related_name='visitantes', blank=False, null=False)
 
     class Meta:
         verbose_name = 'Visitante'
