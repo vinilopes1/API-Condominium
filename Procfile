@@ -1,1 +1,1 @@
-web: gunicorn condominium.wsgi --log-file -
+web: gunicorn .condominium.wsgi --log-file -
