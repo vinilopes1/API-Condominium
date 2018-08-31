@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render
 from rest_framework import  viewsets, authentication, permissions, status
 from rest_framework.response import Response
@@ -47,8 +49,6 @@ class OcorrenciaViewSet(DefaultMixin, viewsets.ModelViewSet):
         serializer = OcorrenciaSerializer(data=request.data,
                                        context={'logado': request.user.perfil})
 
-        print(serializer)
-
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -64,7 +64,9 @@ class EntradaViewSet(DefaultMixin, viewsets.ModelViewSet):
         if request.user.perfil.portaria:
             queryset = self.filter_queryset(Entrada.objects.filter(informante__condominio=request.user.perfil.condominio))
         else:
-            queryset = self.filter_queryset(Entrada.objects.filter(informante=request.user.perfil) or Entrada.objects.filter(publico=True))
+            queryset = self.filter_queryset(Entrada.objects.filter(informante__unidade_habitacional=request.user.perfil.unidade_habitacional) or Entrada.objects.filter(publico=True))
+
+        self.expirar_entradas(queryset)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -115,6 +117,12 @@ class EntradaViewSet(DefaultMixin, viewsets.ModelViewSet):
             return Response({"detail": mensagem}, status=status.HTTP_200_OK)
         except:
             return Response({"detail": "Entrada não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+    def expirar_entradas(self, entradas):
+        for entrada in entradas:
+            data_entrada = datetime.combine(entrada.data, entrada.hora)
+            if data_entrada < datetime.now():
+                entrada.expirar_entrada()
 
 
 class ComentariosViewSet(DefaultMixin, viewsets.ModelViewSet):

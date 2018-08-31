@@ -102,7 +102,6 @@ class Entrada(Post):
 
 
     def finalizar_entrada(self):
-
         if self.status == 'liberada':
             self.status = 'atendida'
             self.save()
@@ -117,6 +116,14 @@ class Entrada(Post):
             return "Entrada cancelada"
 
         return "Não foi possivel cancelar esta entrada"
+
+    def expirar_entrada(self):
+        if self.status == 'informada':
+            self.status = 'expirada'
+            self.save()
+            return "Entrada expirada"
+
+        return "Não foi possivel expirar esta entrada"
 
     def __str__(self):
         return self.descricao
