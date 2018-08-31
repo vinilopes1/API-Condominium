@@ -156,7 +156,9 @@ class PostViewSet(DefaultMixin, viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(Post.objects.filter(informante__condominio=request.user.perfil.condominio).filter(informante__unidade_habitacional=request.user.perfil.unidade_habitacional) | Post.objects.filter(publico=True))\
+        queryset = self.filter_queryset(
+                        Post.objects.filter(informante__condominio=request.user.perfil.condominio).filter(informante__unidade_habitacional=request.user.perfil.unidade_habitacional) |
+                        Post.objects.filter(informante__condominio=request.user.perfil.condominio).filter(publico=True)) \
             .order_by('-id')
 
         page = self.paginate_queryset(queryset)
