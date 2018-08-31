@@ -111,8 +111,6 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ('id', 'descricao', 'informante', 'atualizado_em_data_br', 'atualizado_em_hora_br', 'status_post', 'tipo', 'publico', 'foto', )
 
 
-
-
 class VisitanteSerializer(serializers.ModelSerializer):
 
     unidade_habitacional = UnidadeHabitacionalSerializer(many=False, read_only= True)
